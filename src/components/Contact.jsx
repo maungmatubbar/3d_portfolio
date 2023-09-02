@@ -19,19 +19,20 @@ const Contact = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(form);
     setLoading(true);
     emailjs
       .send(
-        "service_dfasdf",
-        "template_fasf",
+        "service_im2fh8o",
+        "template_dabjpw3",
         {
           from_name: form.name,
           to_name: "Mong",
           from_email: form.email,
-          to_email: "conact@mong.com",
-          message: from.message,
+          to_email: "maungmatubbar@gmail.com",
+          message: form.message,
         },
-        "sdfsadfasfsdfsad"
+        "qGMOE1kGoSpwN9Y6M"
       )
       .then(
         () => {
@@ -92,7 +93,7 @@ const Contact = () => {
             <input
               type="text"
               id="email"
-              name="name"
+              name="email"
               onChange={handleChange}
               value={form.email}
               placeholder="What's your email?"
