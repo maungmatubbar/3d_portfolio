@@ -89,17 +89,6 @@ body {
     radial-gradient(38rem 38rem at 95% 8%, rgba(79, 240, 197, 0.14), transparent 55%),
     radial-gradient(50rem 30rem at 50% 115%, rgba(124, 92, 255, 0.16), transparent 60%);
 }
-.hero-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 54px 54px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 10%, transparent 80%);
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 10%, transparent 80%);
-  pointer-events: none;
-}
 /* Fine noise/grain overlay for depth */
 .hero-bg::after {
   content: "";
@@ -139,17 +128,36 @@ body {
 }
 
 /* ---------- Text gradients ---------- */
+/* Animated gradients: a symmetric (A…B…A) gradient at 200% width panned by one
+   full period gives a seamless, smoothly-shifting color flow in the text. */
 .text-gradient {
-  background: linear-gradient(92deg, #ffffff 0%, #b9a8ff 45%, #4ff0c5 100%);
+  background-image: linear-gradient(90deg, #ffffff, #b9a8ff, #4ff0c5, #b9a8ff, #ffffff);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-gradient-pan 7s linear infinite;
 }
 .text-gradient-accent {
-  background: linear-gradient(92deg, #7c5cff 0%, #4ff0c5 100%);
+  background-image: linear-gradient(90deg, #7c5cff, #4ff0c5, #7c5cff);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-gradient-pan 5s linear infinite;
+}
+@keyframes text-gradient-pan {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient,
+  .text-gradient-accent {
+    animation: none;
+  }
 }
 
 .violet-gradient {
@@ -238,6 +246,266 @@ body {
 .marquee-mask {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* ---------- Scroll progress bar ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  transform-origin: 0%;
+  background: linear-gradient(90deg, #7c5cff 0%, #b9a8ff 45%, #4ff0c5 100%);
+  z-index: 50;
+  box-shadow: 0 0 14px rgba(124, 92, 255, 0.6);
+}
+
+/* ---------- Hero portrait: 3D tilt + rotating gradient ring ---------- */
+.portrait-stage {
+  perspective: 1200px;
+}
+/* Rotating conic gradient ring that frames the photo */
+.ring-rotate::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    #7c5cff,
+    #4ff0c5,
+    #b9a8ff,
+    #7c5cff
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: spin-slow 14s linear infinite;
+  pointer-events: none;
+}
+.portrait-frame {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #0b0b14;
+  box-shadow: 0 50px 120px -40px rgba(124, 92, 255, 0.65),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+.portrait-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+/* Readability gradient baked onto the photo */
+.portrait-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      180deg,
+      rgba(6, 6, 11, 0) 45%,
+      rgba(6, 6, 11, 0.55) 80%,
+      rgba(6, 6, 11, 0.88) 100%
+    ),
+    radial-gradient(120% 80% at 80% 0%, rgba(124, 92, 255, 0.22), transparent 60%);
+  pointer-events: none;
+}
+
+/* Floating glass credential badge */
+.float-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(20, 18, 40, 0.85), rgba(10, 10, 20, 0.7));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+}
+
+/* ---------- Avatar (small circular photo) ---------- */
+.avatar-ring {
+  position: relative;
+  border-radius: 9999px;
+  padding: 2px;
+  background: linear-gradient(135deg, #7c5cff, #4ff0c5);
+}
+.avatar-ring img {
+  display: block;
+  border-radius: 9999px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* ---------- Section number badge ---------- */
+.section-index {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: #4ff0c5;
+}
+
+/* Thin gradient divider line used in headings */
+.heading-rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.6), rgba(79, 240, 197, 0.1), transparent);
+}
+
+/* ---------- Animated grid background ---------- */
+.animated-grid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 40%, #000 4%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 75% at 50% 40%, #000 4%, transparent 78%);
+}
+/* Drifting grid — overscanned so the one-cell loop is seamless. Uses
+   transform (GPU-composited) rather than background-position for smoothness. */
+.ag-grid {
+  position: absolute;
+  inset: -64px;
+  background-image: linear-gradient(to right, rgba(124, 92, 255, 0.11) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(124, 92, 255, 0.11) 1px, transparent 1px);
+  background-size: 52px 52px;
+  animation: grid-pan 7s linear infinite;
+  will-change: transform;
+}
+.ag-grid--slow {
+  animation-duration: 18s;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+@keyframes grid-pan {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(52px, 52px, 0);
+  }
+}
+
+/* Drifting aurora blobs */
+.ag-aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  will-change: transform;
+}
+.ag-aurora-1 {
+  width: 40vw;
+  height: 40vw;
+  max-width: 540px;
+  max-height: 540px;
+  top: -10%;
+  left: 0%;
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.34), transparent 65%);
+  animation: aurora-drift-1 18s ease-in-out infinite;
+}
+.ag-aurora-2 {
+  width: 34vw;
+  height: 34vw;
+  max-width: 480px;
+  max-height: 480px;
+  bottom: -14%;
+  right: 2%;
+  background: radial-gradient(circle, rgba(79, 240, 197, 0.22), transparent 65%);
+  animation: aurora-drift-2 23s ease-in-out infinite;
+}
+@keyframes aurora-drift-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(14%, 10%) scale(1.15);
+  }
+}
+@keyframes aurora-drift-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-16%, -10%) scale(1.12);
+  }
+}
+
+/* Sweeping scan beams (container-relative via left/top) */
+.ag-beam {
+  position: absolute;
+}
+.ag-beam-v {
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: linear-gradient(to bottom, transparent, rgba(79, 240, 197, 0.85), transparent);
+  animation: beam-x 8s linear infinite;
+}
+.ag-beam-h {
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(124, 92, 255, 0.85), transparent);
+  animation: beam-y 11s linear infinite 2.5s;
+}
+@keyframes beam-x {
+  0% {
+    left: -3%;
+    opacity: 0;
+  }
+  12%, 88% {
+    opacity: 0.6;
+  }
+  100% {
+    left: 103%;
+    opacity: 0;
+  }
+}
+@keyframes beam-y {
+  0% {
+    top: -3%;
+    opacity: 0;
+  }
+  12%, 88% {
+    opacity: 0.5;
+  }
+  100% {
+    top: 103%;
+    opacity: 0;
+  }
+}
+
+/* Small drifting grid for contained surfaces (project covers) */
+.animate-grid-cover {
+  animation: grid-pan-sm 12s linear infinite;
+  will-change: transform;
+}
+@keyframes grid-pan-sm {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(26px, 26px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-rotate::before,
+  .animate-float,
+  .animate-spin-slow,
+  .ag-grid,
+  .ag-aurora,
+  .ag-beam,
+  .animate-grid-cover {
+    animation: none !important;
+  }
 }
 
 /* ---------- Canvas loader ---------- */

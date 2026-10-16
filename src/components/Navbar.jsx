@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { styles } from "../style";
 import { navLinks, profile } from "../constants";
 import Icon from "./Icon";
@@ -12,6 +14,32 @@ const Navbar = () => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll-spy: highlight the nav link for whichever section is in view.
+  useEffect(() => {
+    const sections = navLinks
+      .map((l) => {
+        const anchor = document.getElementById(l.id);
+        const el = anchor ? anchor.closest("section") || anchor.parentElement : null;
+        return el ? { id: l.id, el } : null;
+      })
+      .filter(Boolean);
+
+    if (!sections.length) return;
+
+    const idByEl = new Map(sections.map((s) => [s.el, s.id]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(idByEl.get(entry.target));
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+
+    sections.forEach((s) => observer.observe(s.el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -61,13 +89,17 @@ const Navbar = () => {
             <li
               key={link.id}
               className={`${
-                active === link.title ? "text-white" : "text-secondary"
+                active === link.id ? "text-white" : "text-secondary"
               } hover:text-white text-[15px] font-medium cursor-pointer transition-colors duration-300`}
-              onClick={() => setActive(link.title)}
+              onClick={() => setActive(link.id)}
             >
               <a href={`#${link.id}`} className="relative group">
                 {link.title}
-                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-accent-gradient transition-all duration-300 group-hover:w-full" />
+                <span
+                  className={`absolute -bottom-1 left-0 h-[2px] bg-accent-gradient transition-all duration-300 ${
+                    active === link.id ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </a>
             </li>
           ))}
@@ -83,51 +115,94 @@ const Navbar = () => {
           </a>
         </ul>
 
-        {/* Mobile */}
-        <div className="md:hidden flex flex-1 justify-end items-center">
-          <button
-            aria-label="Toggle menu"
-            onClick={() => setToggle(!toggle)}
-            className="grid place-items-center w-10 h-10 rounded-lg glass"
-          >
-            <Icon name={toggle ? "arrow" : "code"} size={20} className="text-white" />
-          </button>
+        {/* Mobile trigger */}
+        <button
+          aria-label="Open menu"
+          onClick={() => setToggle(true)}
+          className="md:hidden grid place-items-center w-10 h-10 rounded-lg glass text-white"
+        >
+          <Icon name="menu" size={20} />
+        </button>
 
-          <div
-            className={`${
-              !toggle ? "hidden" : "flex"
-            } p-6 glass-strong absolute top-16 right-4 my-2 min-w-[200px] z-20 rounded-2xl flex-col gap-1`}
-          >
-            <ul className="list-none flex flex-col gap-1 w-full">
-              {navLinks.map((link) => (
-                <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
-                    onClick={() => {
-                      setToggle(false);
-                      setActive(link.title);
-                    }}
-                    className={`${
-                      active === link.title ? "text-white bg-white/5" : "text-secondary"
-                    } block px-3 py-2 rounded-lg hover:text-white hover:bg-white/5 text-[15px] font-medium transition-colors`}
-                  >
-                    {link.title}
-                  </a>
-                </li>
-              ))}
-              <a
-                href={profile.resumeUrl}
-                download="Mong_Mong_Resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 btn-primary justify-center text-[14px]"
+        {/* Mobile drawer — portaled to <body> so the nav's `transform-gpu`
+            doesn't become its containing block (which would clip this fixed
+            overlay to the nav's height and let the page show through). */}
+        {createPortal(
+          <AnimatePresence>
+            {toggle && (
+              <motion.div
+                key="drawer-root"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setToggle(false)}
+              className="md:hidden fixed inset-0 z-50 bg-black/70"
+            >
+              <motion.aside
+                key="drawer-panel"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "tween", duration: 0.33, ease: [0.16, 1, 0.3, 1] }}
+                onClick={(e) => e.stopPropagation()}
+                style={{ backgroundColor: "#0a0a14" }}
+                className="absolute top-0 right-0 flex h-full w-[80%] max-w-[320px] flex-col border-l border-white/10 shadow-2xl p-6"
               >
-                <Icon name="download" size={16} />
-                Download Resume
-              </a>
-            </ul>
-          </div>
-        </div>
+                <div className="mb-8 flex items-center justify-between">
+                  <span className="flex items-center gap-2.5">
+                    <span className="grid place-items-center w-8 h-8 rounded-lg bg-accent-gradient text-primary font-display font-extrabold text-[15px]">
+                      M
+                    </span>
+                    <span className="text-white font-bold text-[15px] tracking-tight">
+                      {profile.name}
+                    </span>
+                  </span>
+                  <button
+                    aria-label="Close menu"
+                    onClick={() => setToggle(false)}
+                    className="grid place-items-center w-9 h-9 rounded-lg glass text-secondary hover:text-white transition-colors"
+                  >
+                    <Icon name="close" size={18} />
+                  </button>
+                </div>
+
+                <ul className="flex flex-col gap-1">
+                  {navLinks.map((link) => (
+                    <li key={link.id}>
+                      <a
+                        href={`#${link.id}`}
+                        onClick={() => {
+                          setToggle(false);
+                          setActive(link.id);
+                        }}
+                        className={`${
+                          active === link.id ? "text-white bg-white/5" : "text-secondary"
+                        } block rounded-xl px-4 py-3 text-[16px] font-medium transition-colors hover:bg-white/5 hover:text-white`}
+                      >
+                        {link.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={profile.resumeUrl}
+                  download="Mong_Mong_Resume.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setToggle(false)}
+                  className="btn-primary mt-auto justify-center"
+                >
+                  <Icon name="download" size={16} />
+                  Download Resume
+                </a>
+              </motion.aside>
+            </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
       </div>
     </nav>
   );

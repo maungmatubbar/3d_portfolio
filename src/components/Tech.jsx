@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { styles } from "../style";
 import { SectionWrapper } from "../hoc";
 import { techStack } from "../constants";
-import { fadeIn, textVariant } from "../utils/motion";
+import { fadeIn } from "../utils/motion";
+import SectionHeading from "./SectionHeading";
 import Icon from "./Icon";
 
 // Techs that deserve a highlighted chip (the stars of this build)
@@ -54,19 +54,12 @@ const StackCategory = ({ category, icon, accent, items, index }) => (
 
 const Tech = () => (
   <>
-    <motion.div variants={textVariant()}>
-      <p className={styles.sectionSubText}>Capabilities</p>
-      <h2 className={styles.sectionHeadText}>Tech stack.</h2>
-    </motion.div>
-
-    <motion.p
-      variants={fadeIn("", "", 0.1, 1)}
-      className="mt-6 text-secondary text-[17px] max-w-3xl leading-[30px]"
-    >
-      A battle-tested toolkit spanning the full product lifecycle — from typed frontends
-      and backend services to cloud infrastructure, data layers and automation. Highlighted
-      chips power this very portfolio's live contact pipeline.
-    </motion.p>
+    <SectionHeading
+      index="07"
+      eyebrow="Capabilities"
+      title="Tech stack."
+      desc="The tools I reach for daily, grouped by where they live in the stack. The highlighted chips power this very portfolio's own live contact pipeline."
+    />
 
     <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {techStack.map((group, index) => (

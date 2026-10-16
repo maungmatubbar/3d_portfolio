@@ -1,66 +1,78 @@
 import React from "react";
-import { Tilt } from "react-tilt";
 import { motion } from "framer-motion";
-import { styles } from "../style";
-import { services, profile } from "../constants";
-import { fadeIn, textVariant } from "../utils/motion";
+import { fadeIn } from "../utils/motion";
+import { highlights, languages } from "../constants";
 import { SectionWrapper } from "../hoc";
+import SectionHeading from "./SectionHeading";
 import Icon from "./Icon";
-
-const ServiceCard = ({ index, title, desc, icon }) => (
-  <Tilt className="xs:w-[250px] w-full" options={{ max: 20, scale: 1.02, speed: 500 }}>
-    <motion.div
-      variants={fadeIn("right", "spring", 0.2 * index, 0.75)}
-      className="card-grad h-full p-6 flex flex-col gap-4"
-    >
-      <div className="grid place-items-center w-12 h-12 rounded-xl bg-accent/10 border border-accent/25 text-accent-soft">
-        <Icon name={icon} size={24} />
-      </div>
-      <h3 className="text-white text-[18px] font-bold font-display">{title}</h3>
-      <p className="text-secondary text-[14px] leading-[22px]">{desc}</p>
-    </motion.div>
-  </Tilt>
-);
 
 const About = () => (
   <>
-    <motion.div variants={textVariant()}>
-      <p className={styles.sectionSubText}>Introduction</p>
-      <h2 className={styles.sectionHeadText}>About me.</h2>
-    </motion.div>
+    <SectionHeading
+      index="01"
+      eyebrow="Introduction"
+      title="About me."
+    />
 
-    <motion.p
-      variants={fadeIn("", "", 0.1, 1)}
-      className="mt-6 text-secondary text-[17px] max-w-3xl leading-[30px]"
-    >
-      I'm an accomplished <span className="text-white font-semibold">Full-Stack & DevOps Engineer</span> with
-      over <span className="text-white font-semibold">5 years</span> building enterprise-grade SaaS platforms,
-      global logistics networks and AI-augmented web systems. I work comfortably across modern frontend
-      (React, Next.js, TypeScript, Tailwind), scalable backend architecture (NestJS, Node, Django, Laravel)
-      and cloud infrastructure (AWS, Linux, Nginx, Docker) — and I'm fluent in wiring it all together with
-      payment gateways, webhook pipelines and <span className="text-accent-soft font-semibold">n8n automation</span>.
-      I care about clean systems, reliable delivery and removing manual work. Let's build something that lasts.
-    </motion.p>
+    <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
+      {/* ---------- Narrative ---------- */}
+      <motion.div
+        variants={fadeIn("up", "spring", 0.1, 0.9)}
+        className="lg:col-span-7 flex flex-col"
+      >
+        <p className="text-secondary text-[17px] leading-[31px]">
+          I build <span className="text-white font-semibold">enterprise-grade SaaS platforms</span>, global
+          logistics networks and AI-augmented web systems — and own each one from the data model to the
+          cloud it runs on. I move comfortably across modern frontend (React, Next.js, TypeScript, Tailwind),
+          scalable backend architecture (NestJS, Node, Django, Laravel) and cloud infrastructure (AWS, Linux,
+          Nginx, Docker).
+        </p>
+        <p className="mt-5 text-secondary text-[17px] leading-[31px]">
+          What I really do is <span className="text-white font-semibold">solve business problems with software</span> —
+          wiring together payment gateways, webhook pipelines and{" "}
+          <span className="text-accent-soft font-semibold">n8n automation</span> to cut cost and remove manual work.
+          I care about clean systems, reliable delivery and shipping things that last.
+        </p>
 
-    <motion.div
-      variants={fadeIn("up", "spring", 0.2, 1)}
-      className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[14px] font-mono text-secondary"
-    >
-      <span className="flex items-center gap-2">
-        <Icon name="mapPin" size={16} className="text-accent-2" /> {profile.location}
-      </span>
-      <span className="flex items-center gap-2">
-        <Icon name="check" size={16} className="text-accent-2" /> 5+ years experience
-      </span>
-      <span className="flex items-center gap-2">
-        <Icon name="check" size={16} className="text-accent-2" /> Available for freelance & contract
-      </span>
-    </motion.div>
+        {/* Languages — the one detail not surfaced elsewhere on the page */}
+        <div className="mt-9 flex flex-wrap items-center gap-2.5">
+          <span className="text-secondary text-[11px] font-mono uppercase tracking-wider mr-1">
+            Languages
+          </span>
+          {languages.map((l) => (
+            <span
+              key={l.name}
+              className="font-mono text-[12px] px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-secondary"
+            >
+              {l.name} · <span className="text-white/70">{l.level}</span>
+            </span>
+          ))}
+        </div>
+      </motion.div>
 
-    <div className="mt-16 grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-5">
-      {services.map((service, index) => (
-        <ServiceCard key={service.key} index={index} {...service} />
-      ))}
+      {/* ---------- What I bring ---------- */}
+      <motion.div
+        variants={fadeIn("up", "spring", 0.25, 0.9)}
+        className="lg:col-span-5 lg:border-l lg:border-white/10 lg:pl-10"
+      >
+        <h3 className="text-white font-display font-bold text-[20px]">
+          What I bring
+        </h3>
+        <div className="mt-6 flex flex-col gap-5">
+          {highlights.map((h, i) => (
+            <motion.div
+              key={h}
+              variants={fadeIn("up", "spring", 0.1 * i, 0.6)}
+              className="flex items-start gap-3"
+            >
+              <span className="grid place-items-center w-6 h-6 rounded-md bg-accent-2/10 border border-accent-2/30 text-accent-2 shrink-0 mt-0.5">
+                <Icon name="check" size={14} strokeWidth={2.4} />
+              </span>
+              <p className="text-white-100/80 text-[15px] leading-[24px]">{h}</p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   </>
 );

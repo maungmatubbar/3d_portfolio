@@ -1,10 +1,10 @@
 import React from "react";
 import { Tilt } from "react-tilt";
 import { motion } from "framer-motion";
-import { styles } from "../style";
 import { SectionWrapper } from "../hoc";
 import { projects } from "../constants";
-import { fadeIn, textVariant } from "../utils/motion";
+import { fadeIn } from "../utils/motion";
+import SectionHeading from "./SectionHeading";
 import Icon from "./Icon";
 
 const ProjectCard = ({
@@ -31,30 +31,44 @@ const ProjectCard = ({
           background: `radial-gradient(120% 120% at 0% 0%, ${theme[0]}55 0%, transparent 55%), radial-gradient(120% 120% at 100% 100%, ${theme[1]}55 0%, transparent 55%), #0b0b14`,
         }}
       >
-        <div className="absolute inset-0 opacity-[0.35] [background-image:linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:26px_26px]" />
+        <div className="absolute -inset-8 opacity-40 animate-grid-cover [background-image:linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:26px_26px]" />
         <div
           className="absolute inset-0 grid place-items-center"
           style={{ color: theme[0] }}
         >
           <Icon name={glyph} size={64} strokeWidth={1.2} className="opacity-90" />
         </div>
+
+        {/* Live badge */}
+        {live_link ? (
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full bg-accent-2/15 border border-accent-2/40 text-accent-2 backdrop-blur-sm">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-accent-2" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent-2" />
+            </span>
+            Live
+          </span>
+        ) : null}
+
         <div className="absolute top-3 right-3 flex gap-2">
           {live_link ? (
             <button
               onClick={() => window.open(live_link, "_blank")}
-              aria-label="Live demo"
+              aria-label="Open live site"
               className="grid place-items-center w-9 h-9 rounded-full glass-strong hover:text-accent-2 text-white transition-colors"
             >
               <Icon name="external" size={16} />
             </button>
           ) : null}
-          <button
-            onClick={() => window.open(source_code_link, "_blank")}
-            aria-label="Source code"
-            className="grid place-items-center w-9 h-9 rounded-full glass-strong hover:text-accent-2 text-white transition-colors"
-          >
-            <Icon name="github" size={18} filled />
-          </button>
+          {source_code_link ? (
+            <button
+              onClick={() => window.open(source_code_link, "_blank")}
+              aria-label="Source code"
+              className="grid place-items-center w-9 h-9 rounded-full glass-strong hover:text-accent-2 text-white transition-colors"
+            >
+              <Icon name="github" size={18} filled />
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -87,6 +101,17 @@ const ProjectCard = ({
             </span>
           ))}
         </div>
+
+        {live_link ? (
+          <a
+            href={live_link}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent-2 hover:gap-2.5 transition-all w-fit"
+          >
+            Visit live site <Icon name="arrowUpRight" size={15} strokeWidth={2.2} />
+          </a>
+        ) : null}
       </div>
     </Tilt>
   </motion.div>
@@ -94,21 +119,12 @@ const ProjectCard = ({
 
 const Works = () => (
   <>
-    <motion.div variants={textVariant()}>
-      <p className={styles.sectionSubText}>Selected work</p>
-      <h2 className={styles.sectionHeadText}>Featured projects.</h2>
-    </motion.div>
-
-    <div className="w-full flex">
-      <motion.p
-        variants={fadeIn("", "", 0.1, 1)}
-        className="mt-6 text-secondary text-[17px] max-w-3xl leading-[30px]"
-      >
-        Real systems shipped to production — booking engines, cross-border logistics,
-        HRMS/CRM platforms and automation pipelines. Each one reflects how I solve complex
-        problems end to end, from data model to deployment.
-      </motion.p>
-    </div>
+    <SectionHeading
+      index="06"
+      eyebrow="Selected work"
+      title="Featured projects."
+      desc="Real systems shipped to production — booking engines, cross-border logistics, HRMS/CRM platforms and automation pipelines. Each one reflects how I solve complex problems end to end, from data model to deployment."
+    />
 
     <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {projects.map((project, index) => (
