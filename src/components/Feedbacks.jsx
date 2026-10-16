@@ -1,9 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { styles } from "../style";
 import { SectionWrapper } from "../hoc";
-import { fadeIn, textVariant } from "../utils/motion";
+import { fadeIn } from "../utils/motion";
 import { testimonials } from "../constants";
+import SectionHeading from "./SectionHeading";
+import Icon from "./Icon";
 
 const FeedbackCard = ({
   index,
@@ -17,9 +18,7 @@ const FeedbackCard = ({
     variants={fadeIn("up", "spring", index * 0.2, 0.75)}
     className="card-grad p-8 flex flex-col"
   >
-    <span className="font-display text-accent-soft text-[56px] leading-[0.5] mt-4">
-      &ldquo;
-    </span>
+    <Icon name="quote" size={34} filled className="text-accent/50" />
     <p className="mt-4 text-white/90 text-[16px] leading-[26px] flex-1">
       {testimonial}
     </p>
@@ -39,10 +38,12 @@ const FeedbackCard = ({
 
 const Feedbacks = () => (
   <>
-    <motion.div variants={textVariant()}>
-      <p className={styles.sectionSubText}>Kind words</p>
-      <h2 className={styles.sectionHeadText}>References &amp; testimonials.</h2>
-    </motion.div>
+    <SectionHeading
+      index="08"
+      eyebrow="Kind words"
+      title="References & testimonials."
+      desc="What colleagues and clients say about working with me across training, logistics operations and product delivery."
+    />
 
     <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
       {testimonials.map((t, index) => (

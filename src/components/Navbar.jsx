@@ -14,6 +14,32 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Scroll-spy: highlight the nav link for whichever section is in view.
+  useEffect(() => {
+    const sections = navLinks
+      .map((l) => {
+        const anchor = document.getElementById(l.id);
+        const el = anchor ? anchor.closest("section") || anchor.parentElement : null;
+        return el ? { id: l.id, el } : null;
+      })
+      .filter(Boolean);
+
+    if (!sections.length) return;
+
+    const idByEl = new Map(sections.map((s) => [s.el, s.id]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(idByEl.get(entry.target));
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+
+    sections.forEach((s) => observer.observe(s.el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <nav className="w-full fixed top-0 z-30 transform-gpu">
       {/* Single, always-composited blur layer — we only fade its opacity on
@@ -61,13 +87,17 @@ const Navbar = () => {
             <li
               key={link.id}
               className={`${
-                active === link.title ? "text-white" : "text-secondary"
+                active === link.id ? "text-white" : "text-secondary"
               } hover:text-white text-[15px] font-medium cursor-pointer transition-colors duration-300`}
-              onClick={() => setActive(link.title)}
+              onClick={() => setActive(link.id)}
             >
               <a href={`#${link.id}`} className="relative group">
                 {link.title}
-                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-accent-gradient transition-all duration-300 group-hover:w-full" />
+                <span
+                  className={`absolute -bottom-1 left-0 h-[2px] bg-accent-gradient transition-all duration-300 ${
+                    active === link.id ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </a>
             </li>
           ))}
@@ -105,10 +135,10 @@ const Navbar = () => {
                     href={`#${link.id}`}
                     onClick={() => {
                       setToggle(false);
-                      setActive(link.title);
+                      setActive(link.id);
                     }}
                     className={`${
-                      active === link.title ? "text-white bg-white/5" : "text-secondary"
+                      active === link.id ? "text-white bg-white/5" : "text-secondary"
                     } block px-3 py-2 rounded-lg hover:text-white hover:bg-white/5 text-[15px] font-medium transition-colors`}
                   >
                     {link.title}

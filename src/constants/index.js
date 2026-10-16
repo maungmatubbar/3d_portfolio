@@ -10,12 +10,19 @@ export const profile = {
   shortRole: "Full-Stack & DevOps Engineer",
   tagline:
     "I architect and ship enterprise SaaS platforms, global logistics networks, and AI-augmented systems — end to end, from React interfaces to hardened cloud infrastructure.",
+  // Short, punchy intro for the hero (kept distinct from the longer About bio)
+  heroIntro:
+    "I design, build and ship production software end to end — from typed React interfaces to hardened cloud infrastructure and the automation that keeps it all running.",
   location: "Dhaka, Bangladesh",
+  locationFull: "Vatara, Dhaka, Bangladesh",
   availability: "Available for select freelance & contract work",
+  availabilityShort: "Open to work",
   email: "maungmatubbar@gmail.com",
   phone: "+880 1726969417",
   linkedin: "https://linkedin.com/in/mong-mong",
   github: "https://github.com/",
+  // Portrait used across the hero / about (optimized copy lives in /public)
+  photo: "/mong.png",
   // Branded, print-optimized resume generated from /resume/resume.html
   // (regenerate with: npm run resume). Edit the HTML, then rebuild.
   resumeUrl: "/Mong_Mong_Resume.pdf",
@@ -23,17 +30,75 @@ export const profile = {
 
 export const navLinks = [
   { id: "about", title: "About" },
+  { id: "services", title: "Services" },
   { id: "experience", title: "Experience" },
   { id: "work", title: "Work" },
   { id: "stack", title: "Stack" },
   { id: "contact", title: "Contact" },
 ];
 
+// Hero + about outcome metrics. `to` drives the count-up animation,
+// `suffix`/`prefix` wrap it, `decimals` keeps values like 99.9 intact.
+// Focused on delivered results — not years on a clock.
 export const stats = [
-  { label: "Years of experience", value: "5+" },
-  { label: "Production systems shipped", value: "20+" },
-  { label: "Cloud uptime maintained", value: "99.9%" },
-  { label: "Automations orchestrated", value: "n8n" },
+  { label: "Production systems shipped", to: 20, suffix: "+", icon: "rocket" },
+  { label: "Automations shipped", to: 30, suffix: "+", icon: "bolt" },
+  { label: "Cloud uptime maintained", to: 99.9, suffix: "%", decimals: 1, icon: "cloud" },
+  { label: "Payment gateways integrated", to: 5, suffix: "+", icon: "cart" },
+];
+
+// Short, scannable value props shown in the About section
+export const highlights = [
+  "Own problems end to end — data model, API, UI and the infrastructure under it.",
+  "Translate business goals into systems that cut cost and manual work.",
+  "Fluent across React/Next.js, NestJS/Node, Django & Laravel and AWS.",
+  "Integrate real payment gateways, webhooks and n8n pipelines in production.",
+];
+
+// Spoken / written languages
+export const languages = [
+  { name: "Bengali", level: "Native" },
+  { name: "English", level: "Professional" },
+];
+
+// Quick, scannable facts for the profile card
+export const quickFacts = [
+  { icon: "mapPin", label: "Based in", value: "Dhaka, Bangladesh" },
+  { icon: "layers", label: "Works with", value: "React · NestJS · AWS" },
+  { icon: "spark", label: "Focus", value: "SaaS · Logistics · AI" },
+  { icon: "mail", label: "Availability", value: "Freelance & contract" },
+];
+
+// How I work — business-first, problem-solving methodology
+export const approach = [
+  {
+    icon: "spark",
+    title: "Start with the business problem",
+    desc: "I map the real bottleneck and what it costs, then design the smallest system that removes it — not the biggest one I could build.",
+  },
+  {
+    icon: "layers",
+    title: "Architect for scale & cost",
+    desc: "Reliable, maintainable systems that stay affordable to run. Clean data models, typed APIs and infrastructure that won't surprise you.",
+  },
+  {
+    icon: "bolt",
+    title: "Automate the manual work",
+    desc: "Webhooks, n8n pipelines and AI tooling that eliminate repetitive tasks, cut human error and free the team to focus on growth.",
+  },
+  {
+    icon: "shield",
+    title: "Ship, measure, harden",
+    desc: "Iterate to production fast, watch the numbers, then secure and optimize — zero-downtime releases backed by automated tests.",
+  },
+];
+
+// Tangible business outcomes delivered (qualitative, not inflated numbers)
+export const businessImpact = [
+  "Manual data entry removed end to end",
+  "Real-time payment reconciliation",
+  "Rollback-safe production deploys",
+  "Logistics, CRM & HR synced automatically",
 ];
 
 // What I do — rendered with inline SVG icons (see About.jsx iconMap)
@@ -63,6 +128,121 @@ export const services = [
     desc: "n8n workflow orchestration, webhook pipelines and Claude/AI-assisted systems that remove manual, repetitive work.",
   },
 ];
+
+// System map — the four workstreams I run, each flowing left→right from a
+// real-world trigger through the service I build to the platform surface and
+// the business outcome. Powers the interactive "Services" section.
+export const systemMap = {
+  columns: ["Trigger", "Service", "Platform surface", "Outcome"],
+  lanes: [
+    {
+      key: "qa",
+      kind: "Automation",
+      icon: "flask",
+      name: "QA Automation & DevOps",
+      filterLabel: "QA & DevOps",
+      steps: [
+        {
+          title: "Test runs & events",
+          desc: "Test suites and webhook events fired from internal systems.",
+        },
+        {
+          title: "Playwright & n8n",
+          desc: "TypeScript E2E suites and multi-step automation workflows.",
+        },
+        {
+          title: "Core journeys",
+          chips: ["Login", "Signup", "Order", "Payment", "Buy For Me", "Ship For Me"],
+        },
+        {
+          title: "Environments in sync",
+          desc: "Managed servers and DB hosts — internal systems kept in sync, zero-downtime deploys.",
+        },
+      ],
+    },
+    {
+      key: "backend",
+      kind: "Development",
+      icon: "server",
+      name: "Backend modules & business engines",
+      filterLabel: "Backend modules",
+      steps: [
+        {
+          title: "Customer & ops requests",
+          desc: "Orders, shipments and staff adjustments from the operations team.",
+        },
+        {
+          title: "Backend services",
+          desc: "NestJS / Django order-processing and invoice-generation engines.",
+        },
+        {
+          title: "Business modules",
+          chips: [
+            "Buy For Me",
+            "Shipment invoices",
+            "Discounts & coupons",
+            "Salary generation",
+            "Customer profiles",
+          ],
+        },
+        {
+          title: "Audit-friendly records",
+          desc: "Filterable, trackable invoices and fully logged adjustments.",
+        },
+      ],
+    },
+    {
+      key: "chatshop",
+      kind: "Development",
+      icon: "chat",
+      name: "ChatShop AI & conversational commerce",
+      filterLabel: "ChatShop & AI",
+      steps: [
+        {
+          title: "Customer conversations",
+          desc: "Support requests and shopping questions arriving in chat.",
+        },
+        {
+          title: "AI chatbot",
+          desc: "Claude-assisted automated support and conversational commerce.",
+        },
+        {
+          title: "ChatShop",
+          chips: ["AI web scraping", "Caching layer", "Real-time data"],
+        },
+        {
+          title: "Automated support",
+          desc: "Support workflows and data lookups that run without manual steps.",
+        },
+      ],
+    },
+    {
+      key: "payments",
+      kind: "Development",
+      icon: "cart",
+      name: "Payment & logistics integrations",
+      filterLabel: "Payments & logistics",
+      steps: [
+        {
+          title: "Checkout & delivery",
+          desc: "Payments and shipments initiated from the storefronts.",
+        },
+        {
+          title: "Gateway APIs",
+          chips: ["Stripe", "SSLCommerz", "Pathao"],
+        },
+        {
+          title: "Store platforms",
+          chips: ["WooCommerce", "Magento"],
+        },
+        {
+          title: "Catalog in sync",
+          desc: "Import/export routines and inventory configuration kept consistent.",
+        },
+      ],
+    },
+  ],
+};
 
 // Categorized tech stack — rendered as glass chips grouped by domain
 export const techStack = [
@@ -137,6 +317,7 @@ export const experiences = [
       "Leveraged the Claude API and Cursor AI to accelerate backend logic, automate communication pipelines and refactor architecture.",
       "Implemented end-to-end (E2E) automated test suites with Playwright to ensure zero-downtime releases.",
     ],
+    tech: ["Next.js", "NestJS", "AWS", "Nginx", "Docker", "n8n", "Stripe", "SSLCommerz", "Playwright", "Claude API"],
   },
   {
     title: "Web Developer",
@@ -152,6 +333,7 @@ export const experiences = [
       "Implemented authentication, authorization and role-based access control (RBAC) for administrative and retail users.",
       "Resolved performance bottlenecks and ran regular refactoring to maximize application uptime and reliability.",
     ],
+    tech: ["PHP", "Laravel", "MySQL", "POS", "RBAC", "AJAX"],
   },
   {
     title: "Web Developer Trainee & Project Apprentice",
@@ -165,10 +347,74 @@ export const experiences = [
       "Designed normalized relational database schemas, role-based access control (RBAC) and AJAX-driven data-processing layers.",
       "Completed PHP with Laravel Framework certification through the BASIS Institute of Technology & Management.",
     ],
+    tech: ["PHP (OOP)", "Laravel", "MySQL", "AJAX", "RBAC"],
   },
 ];
 
 export const projects = [
+  {
+    name: "The School of Eternity",
+    subtitle: "Online Learning & Community Platform",
+    description:
+      "A modern e-learning platform delivering structured courses and community content through a fast, responsive interface backed by a scalable content API and cloud hosting.",
+    highlights: [
+      "Course & content delivery",
+      "Responsive, SEO-friendly UI",
+      "Scalable cloud deployment",
+    ],
+    tags: [
+      { name: "Next.js", color: "blue-text-gradient" },
+      { name: "React", color: "green-text-gradient" },
+      { name: "Node.js", color: "pink-text-gradient" },
+      { name: "AWS", color: "blue-text-gradient" },
+    ],
+    theme: ["#7c5cff", "#4ff0c5"],
+    glyph: "cap",
+    source_code_link: "",
+    live_link: "https://theschoolofeternity.org/",
+  },
+  {
+    name: "myBidesh",
+    subtitle: "Overseas Services Web App",
+    description:
+      "A web application serving Bangladeshis living and working abroad — account-based dashboards, secure transactions and service workflows, engineered for reliability on hardened cloud infrastructure.",
+    highlights: [
+      "Account-based dashboards",
+      "Secure transaction flows",
+      "Cloud-hosted & hardened",
+    ],
+    tags: [
+      { name: "Next.js", color: "blue-text-gradient" },
+      { name: "NestJS", color: "green-text-gradient" },
+      { name: "PostgreSQL", color: "pink-text-gradient" },
+      { name: "AWS", color: "blue-text-gradient" },
+    ],
+    theme: ["#4ff0c5", "#7c5cff"],
+    glyph: "globe",
+    source_code_link: "",
+    live_link: "https://app.mybidesh.com/",
+  },
+  {
+    name: "Nahid24",
+    subtitle: "E-Commerce & Content Platform",
+    description:
+      "A Bengali e-commerce and content platform for books and publications — a web storefront paired with native iOS/Android apps, an integrated cart and a multi-channel content hub.",
+    highlights: [
+      "Web + iOS / Android apps",
+      "Cart & checkout flow",
+      "Content & media hub",
+    ],
+    tags: [
+      { name: "Next.js", color: "blue-text-gradient" },
+      { name: "React", color: "green-text-gradient" },
+      { name: "Node.js", color: "pink-text-gradient" },
+      { name: "Payments", color: "blue-text-gradient" },
+    ],
+    theme: ["#7c5cff", "#b9a8ff"],
+    glyph: "cart",
+    source_code_link: "",
+    live_link: "https://nahid24.com/",
+  },
   {
     name: "FlatBook",
     subtitle: "Global Hospitality & Booking System",

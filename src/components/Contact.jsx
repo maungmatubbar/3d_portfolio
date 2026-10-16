@@ -5,6 +5,8 @@ import { EarthCanvas } from "./canvas";
 import { slideIn } from "../utils/motion";
 import { SectionWrapper } from "../hoc";
 import { profile } from "../constants";
+import CanvasErrorBoundary from "./CanvasErrorBoundary";
+import AnimatedGrid from "./AnimatedGrid";
 import Icon from "./Icon";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
@@ -19,7 +21,18 @@ const Contact = () => {
     honeypot: "", // anti-spam: must stay empty
   });
   const [status, setStatus] = useState({ state: "idle", message: "" });
+  const [copied, setCopied] = useState(false);
   const loading = status.state === "sending";
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard unavailable — the mailto link still works */
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,8 +84,11 @@ const Contact = () => {
         variants={slideIn("left", "tween", 0.2, 1)}
         className="flex-[0.75] glass-strong p-8 rounded-3xl"
       >
-        <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={styles.sectionHeadText}>Let's work together.</h3>
+        <div className="flex items-center gap-4">
+          <span className="section-index">09</span>
+          <span className="kicker">Get in touch</span>
+        </div>
+        <h3 className={`${styles.sectionHeadText} mt-4`}>Let's work together.</h3>
         <p className="mt-4 text-secondary text-[15px] leading-[24px] max-w-lg">
           Have a project, a role, or an automation idea? Drop a message — it runs
           through a live NestJS API and n8n pipeline, not a mailto link.
@@ -167,30 +183,61 @@ const Contact = () => {
         </form>
 
         {/* Direct contact details */}
-        <div className="mt-9 pt-6 border-t border-white/5 flex flex-col gap-3">
-          <a
-            href={`mailto:${profile.email}`}
-            className="flex items-center gap-3 text-secondary hover:text-white transition-colors text-[14px]"
-          >
-            <Icon name="mail" size={18} className="text-accent-soft" /> {profile.email}
-          </a>
-          <a
-            href={`tel:${profile.phone.replace(/\s/g, "")}`}
-            className="flex items-center gap-3 text-secondary hover:text-white transition-colors text-[14px]"
-          >
-            <Icon name="phone" size={18} className="text-accent-soft" /> {profile.phone}
-          </a>
-          <span className="flex items-center gap-3 text-secondary text-[14px]">
-            <Icon name="mapPin" size={18} className="text-accent-soft" /> {profile.location}
-          </span>
+        <div className="mt-9 pt-6 border-t border-white/5 grid gap-2.5">
+          {/* Email row with copy-to-clipboard */}
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black-200/40 px-4 py-3 transition-colors hover:border-white/20">
+            <a
+              href={`mailto:${profile.email}`}
+              className="group flex min-w-0 items-center gap-3 text-secondary transition-colors hover:text-white"
+            >
+              <Icon name="mail" size={18} className="shrink-0 text-accent-soft" />
+              <span className="flex min-w-0 flex-col leading-tight">
+                <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-secondary/50">
+                  Email
+                </span>
+                <span className="truncate text-[14px]">{profile.email}</span>
+              </span>
+            </a>
+            <button
+              type="button"
+              onClick={copyEmail}
+              aria-label="Copy email address"
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono text-[11px] transition-colors ${
+                copied
+                  ? "border-accent-2/40 bg-accent-2/10 text-accent-2"
+                  : "border-white/10 bg-white/[0.03] text-secondary hover:text-white"
+              }`}
+            >
+              <Icon name={copied ? "check" : "copy"} size={13} strokeWidth={2.2} />
+              {copied ? "Copied" : "Copy"}
+            </button>
+          </div>
+
+          {/* Phone + location */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 px-1 pt-1">
+            <a
+              href={`tel:${profile.phone.replace(/\s/g, "")}`}
+              className="flex items-center gap-2.5 text-secondary hover:text-white transition-colors text-[13.5px]"
+            >
+              <Icon name="phone" size={16} className="text-accent-soft" /> {profile.phone}
+            </a>
+            <span className="flex items-center gap-2.5 text-secondary text-[13.5px]">
+              <Icon name="mapPin" size={16} className="text-accent-soft" /> {profile.location}
+            </span>
+          </div>
         </div>
       </motion.div>
 
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
-        className="xl:flex-1 xl:h-[600px] md:h-[550px] h-[380px]"
+        className="relative xl:flex-1 xl:h-[600px] md:h-[550px] h-[380px] rounded-3xl overflow-hidden"
       >
-        <EarthCanvas />
+        <AnimatedGrid variant="subtle" />
+        <div className="relative z-10 w-full h-full">
+          <CanvasErrorBoundary>
+            <EarthCanvas />
+          </CanvasErrorBoundary>
+        </div>
       </motion.div>
     </div>
   );
