@@ -67,7 +67,7 @@ const CodeWindow = ({
   lines = defaultLines,
   className = "",
 }) => (
-  <div className={`glass-strong rounded-2xl overflow-hidden shadow-glow ${className}`}>
+  <div className={`glass-strong rounded-2xl overflow-hidden shadow-glow min-w-0 ${className}`}>
     {/* Title bar */}
     <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
       <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />

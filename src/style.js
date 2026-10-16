@@ -9,7 +9,7 @@ const styles = {
     "text-secondary font-medium lg:text-[22px] sm:text-[20px] xs:text-[18px] text-[16px] lg:leading-[34px] leading-[26px]",
 
   sectionHeadText:
-    "font-display text-white font-extrabold md:text-[54px] sm:text-[46px] xs:text-[38px] text-[30px] tracking-tight",
+    "font-display text-white font-extrabold md:text-[54px] sm:text-[46px] xs:text-[38px] text-[30px] leading-[1.05] tracking-tight",
   sectionSubText:
     "kicker",
 };

@@ -84,7 +84,7 @@ const ExperienceItem = ({ experience, index, isLast }) => {
 
       {/* ---------- Content card ---------- */}
       <div className="card-grad group flex-1 p-6 sm:p-8">
-        <div className="grid gap-x-8 gap-y-6 lg:grid-cols-[1fr_200px]">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-[1fr_200px]">
           {/* main */}
           <div>
             {/* dates inline on mobile/tablet */}

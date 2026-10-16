@@ -15,7 +15,7 @@ const Education = () => (
       desc="A formal engineering foundation, backed by focused, framework-specific professional training."
     />
 
-    <div className="mt-14 grid lg:grid-cols-2 gap-8">
+    <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Education */}
       <div className="flex flex-col gap-5">
         <div className="flex items-center gap-3">
@@ -29,17 +29,17 @@ const Education = () => (
           <motion.div
             key={e.degree}
             variants={fadeIn("right", "spring", 0.12 * i, 0.7)}
-            className="card-grad p-6 flex gap-4"
+            className="card-grad p-6 flex items-center gap-5"
           >
-            <span className="font-display font-extrabold text-[22px] text-gradient-accent shrink-0 w-14">
+            <span className="font-display font-extrabold text-[26px] leading-none text-gradient-accent shrink-0 tabular-nums">
               {e.year}
             </span>
-            <div className="border-l border-white/10 pl-4">
-              <h4 className="text-white font-semibold text-[16px] leading-snug">
+            <span className="w-px self-stretch bg-white/10" />
+            <div className="min-w-0">
+              <h4 className="text-white font-display font-bold text-[16.5px] leading-snug">
                 {e.degree}
               </h4>
-              <p className="text-accent-soft text-[13px] mt-1">{e.school}</p>
-              <p className="text-secondary text-[12px] font-mono mt-1.5">{e.detail}</p>
+              <p className="text-accent-soft text-[13.5px] font-medium mt-1.5">{e.school}</p>
             </div>
           </motion.div>
         ))}

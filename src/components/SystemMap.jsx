@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { systemMap } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
@@ -14,7 +14,7 @@ const kindStyles = {
 
 const StepCard = ({ step, isLast }) => (
   <div className="relative h-full">
-    <div className="flex h-full flex-col rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 transition-all duration-300 hover:border-accent/40 hover:bg-white/[0.04]">
+    <div className="flex h-full flex-col rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 transition-all duration-300 group-hover:border-accent/50 group-hover:bg-white/[0.04] group-hover:shadow-[0_0_34px_-18px_rgba(124,92,255,0.85)]">
       <h4 className="font-display text-[14.5px] font-semibold leading-snug text-white">
         {step.title}
       </h4>
@@ -26,7 +26,7 @@ const StepCard = ({ step, isLast }) => (
           {step.chips.map((c) => (
             <span
               key={c}
-              className="rounded-md border border-white/10 bg-black-200/50 px-2 py-[3px] font-mono text-[10.5px] text-white-100/70"
+              className="rounded-md border border-white/10 bg-black-200/50 px-2 py-[3px] font-mono text-[10.5px] text-white-100/70 transition-colors duration-300 group-hover:border-accent/25"
             >
               {c}
             </span>
@@ -38,12 +38,18 @@ const StepCard = ({ step, isLast }) => (
     {!isLast && (
       <>
         {/* horizontal connector (desktop) */}
-        <span className="pointer-events-none absolute right-[-21px] top-1/2 z-10 hidden -translate-y-1/2 text-secondary/40 lg:block">
-          <Icon name="arrow" size={16} strokeWidth={1.8} />
+        <span className="pointer-events-none absolute left-full top-1/2 z-10 hidden -translate-y-1/2 items-center gap-1 pl-1.5 lg:flex">
+          <span className="h-0 w-4 border-t border-dashed border-secondary/30 transition-colors duration-300 group-hover:border-accent" />
+          <span className="text-secondary/40 transition-colors duration-300 group-hover:animate-flow-x group-hover:text-accent">
+            <Icon name="arrow" size={13} strokeWidth={2} />
+          </span>
         </span>
         {/* vertical connector (mobile / tablet) */}
-        <span className="pointer-events-none absolute bottom-[-19px] left-1/2 z-10 -translate-x-1/2 text-secondary/40 lg:hidden">
-          <Icon name="arrowDown" size={16} strokeWidth={1.8} />
+        <span className="pointer-events-none absolute left-1/2 top-full z-10 flex -translate-x-1/2 flex-col items-center pt-1.5 lg:hidden">
+          <span className="h-4 w-0 border-l border-dashed border-secondary/30 transition-colors duration-300 group-hover:border-accent" />
+          <span className="-mt-0.5 text-secondary/40 transition-colors duration-300 group-hover:text-accent">
+            <Icon name="arrowDown" size={13} strokeWidth={2} />
+          </span>
         </span>
       </>
     )}
@@ -51,62 +57,28 @@ const StepCard = ({ step, isLast }) => (
 );
 
 const SystemMap = () => {
-  const [active, setActive] = useState("all");
-
-  const filters = [
-    { key: "all", label: "All" },
-    ...systemMap.lanes.map((l) => ({ key: l.key, label: l.filterLabel })),
-  ];
-
   return (
     <>
-      {/* ---------- Header + filters ---------- */}
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <div className="flex flex-col">
-          <motion.div variants={textVariant()} className="flex items-center gap-4">
-            <span className="section-index">02</span>
-            <span className="kicker">System map</span>
-            <span className="heading-rule hidden flex-1 max-w-[120px] sm:block" />
-          </motion.div>
-
-          <motion.h2 variants={textVariant(0.05)} className={`${styles.sectionHeadText} mt-4`}>
-            Four workstreams, one platform.
-          </motion.h2>
-
-          <motion.p
-            variants={fadeIn("", "", 0.1, 1)}
-            className="mt-5 max-w-2xl text-[16px] leading-[28px] text-secondary sm:text-[17px]"
-          >
-            Each lane runs from a real-world trigger through the service I build to the
-            platform surface and the business outcome it delivers. Pick a workstream to
-            focus it.
-          </motion.p>
-        </div>
-
-        {/* filter pills */}
-        <motion.div
-          variants={fadeIn("left", "spring", 0.2, 0.8)}
-          className="flex flex-wrap gap-2 lg:max-w-[460px] lg:justify-end"
-        >
-          {filters.map((f) => {
-            const isActive = active === f.key;
-            return (
-              <button
-                key={f.key}
-                type="button"
-                onClick={() => setActive(f.key)}
-                aria-pressed={isActive}
-                className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-accent text-white shadow-glow"
-                    : "border border-white/10 bg-white/[0.02] text-secondary hover:border-accent/40 hover:text-white"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
+      {/* ---------- Header ---------- */}
+      <div className="flex flex-col">
+        <motion.div variants={textVariant()} className="flex items-center gap-4">
+          <span className="section-index">02</span>
+          <span className="kicker">System map</span>
+          <span className="heading-rule hidden flex-1 max-w-[120px] sm:block" />
         </motion.div>
+
+        <motion.h2 variants={textVariant(0.05)} className={`${styles.sectionHeadText} mt-4`}>
+          Four workstreams, one platform.
+        </motion.h2>
+
+        <motion.p
+          variants={fadeIn("", "", 0.1, 1)}
+          className="mt-5 max-w-2xl text-[16px] leading-[28px] text-secondary sm:text-[17px]"
+        >
+          Each lane runs from a real-world trigger through the service I build to the
+          platform surface and the business outcome it delivers. Hover a lane to trace it
+          end to end.
+        </motion.p>
       </div>
 
       {/* ---------- Map ---------- */}
@@ -127,15 +99,8 @@ const SystemMap = () => {
         </div>
 
         <div className="flex flex-col gap-7 lg:gap-6">
-          {systemMap.lanes.map((lane) => {
-            const dim = active !== "all" && active !== lane.key;
-            return (
-              <div
-                key={lane.key}
-                className={`transition-all duration-300 ${
-                  dim ? "opacity-35 saturate-50" : "opacity-100"
-                }`}
-              >
+          {systemMap.lanes.map((lane) => (
+            <div key={lane.key} className="group">
                 {/* lane header */}
                 <div className="mb-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
                   <span
@@ -162,8 +127,7 @@ const SystemMap = () => {
                   ))}
                 </div>
               </div>
-            );
-          })}
+          ))}
         </div>
       </motion.div>
     </>

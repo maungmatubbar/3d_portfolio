@@ -66,6 +66,10 @@ module.exports = {
           "0%": { backgroundPosition: "200% 0" },
           "100%": { backgroundPosition: "-200% 0" },
         },
+        "flow-x": {
+          "0%,100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(4px)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(0.16,1,0.3,1) both",
@@ -74,6 +78,7 @@ module.exports = {
         marquee: "marquee 32s linear infinite",
         "spin-slow": "spin-slow 24s linear infinite",
         shimmer: "shimmer 6s linear infinite",
+        "flow-x": "flow-x 1.2s ease-in-out infinite",
       },
     },
   },

@@ -14,7 +14,7 @@ const About = () => (
       title="About me."
     />
 
-    <div className="mt-12 grid lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
+    <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
       {/* ---------- Narrative ---------- */}
       <motion.div
         variants={fadeIn("up", "spring", 0.1, 0.9)}

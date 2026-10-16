@@ -25,9 +25,9 @@ const Approach = () => (
       desc="I'm not just writing features — I'm removing bottlenecks. Every system I build starts from a business goal and ends in measurable, automated, reliable delivery."
     />
 
-    <div className="mt-14 grid lg:grid-cols-2 gap-10 items-start">
+    <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
       {/* ---------- Methodology ---------- */}
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 min-w-0">
         {approach.map((a, i) => (
           <motion.div
             key={a.title}
@@ -60,7 +60,7 @@ const Approach = () => (
       {/* ---------- Coding view + outcomes ---------- */}
       <motion.div
         variants={fadeIn("left", "spring", 0.2, 0.9)}
-        className="flex flex-col gap-6 lg:sticky lg:top-28"
+        className="flex flex-col gap-6 lg:sticky lg:top-28 min-w-0"
       >
         <CodeWindow />
 

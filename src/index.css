@@ -128,17 +128,36 @@ body {
 }
 
 /* ---------- Text gradients ---------- */
+/* Animated gradients: a symmetric (A…B…A) gradient at 200% width panned by one
+   full period gives a seamless, smoothly-shifting color flow in the text. */
 .text-gradient {
-  background: linear-gradient(92deg, #ffffff 0%, #b9a8ff 45%, #4ff0c5 100%);
+  background-image: linear-gradient(90deg, #ffffff, #b9a8ff, #4ff0c5, #b9a8ff, #ffffff);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-gradient-pan 7s linear infinite;
 }
 .text-gradient-accent {
-  background: linear-gradient(92deg, #7c5cff 0%, #4ff0c5 100%);
+  background-image: linear-gradient(90deg, #7c5cff, #4ff0c5, #7c5cff);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-gradient-pan 5s linear infinite;
+}
+@keyframes text-gradient-pan {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient,
+  .text-gradient-accent {
+    animation: none;
+  }
 }
 
 .violet-gradient {

@@ -169,6 +169,8 @@ const paths = {
       <path d="M5 15V5a2 2 0 0 1 2-2h10" />
     </>
   ),
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  close: <path d="M18 6 6 18M6 6l12 12" />,
 };
 
 const Icon = ({ name, size = 24, className = "", strokeWidth = 1.6, filled = false }) => {
